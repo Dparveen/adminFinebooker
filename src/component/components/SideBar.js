@@ -114,6 +114,20 @@ export default function SideBar(props) {
                     </div>
                     {userData.userType === 1?
                     <>
+                    <div className="nav-item dropdown">
+                        <Link to="/" className="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i className="fas fa-dice-d20 me-2"></i>Withdrawal</Link>
+                        <div className="dropdown-menu bg-transparent border-0">
+                            <Link to="/wRequest" className="dropdown-item"><i className="fa fa-list me-1"></i> Request</Link>
+                            <Link to="/wHistory" className="dropdown-item"> <i className="fa fa-file-invoice-dollar"></i> History</Link>
+                        </div>
+                    </div>
+                    <div className="nav-item dropdown">
+                        <Link to="/" className="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i className="fas fa-dice-d20 me-2"></i>Send Money</Link>
+                        <div className="dropdown-menu bg-transparent border-0">
+                            <Link to="/sRequest" className="dropdown-item"><i className="fa fa-list me-1"></i> Request</Link>
+                            <Link to="/sHistory" className="dropdown-item"> <i className="fa fa-file-invoice-dollar"></i> History</Link>
+                        </div>
+                    </div>
                     <Link to="/banner" className="nav-item nav-link"><i className="	far fa-images me-2"></i>Banner</Link>
                     <div className="nav-item dropdown">
                         <Link to="/" className="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i className="fa fa-plus me-2"></i>Add Domain</Link>

@@ -4,13 +4,9 @@ import Direct from './component/Direct';
 import Home from './component/Home';
 import Login from './component/Login';
 import Recharge from './component/Recharge';
-import WithdrawPage from './component/RequestWithdraw';
-import SendMoneyPage from './component/SendMoney';
-import Signup from './component/Signup';
 import Sports from './component/Sports';
 import NoPage from './component/404';
 import Protected from "./component/Protection/Protected";
-import Live from "./component/Live";
 import Logout from "./component/Protection/Logout";
 import Account from "./component/Account";
 import { CommonContext } from "./component/CommonContext";
@@ -25,12 +21,14 @@ import MatchDeclare from "./component/MatchDeclare";
 import Event from "./component/Event";
 import Mcontrol from "./component/MtachControl";
 import Banner from "./component/BannerScreen";
+import WalletPage from "./component/Wallet";
+import WithdrawRequestPage from "./component/WithdrawlRequestPage";
+import SendMoneyRequestPage from "./component/SendMoneyRequestPage";
 export default function App() {
   const [balance, setBalance] = useState(0);
   const [exposer, setExposer] = useState(0);
   const [Menu, setMenu] = useState('');
   const [token, setToken] = useState('')
-  const [api, setAPI] = useState(false)
   const [User, setUser]=useState([]);
   const [Live, setLive] = useState(0)
   const [Profit, setProfit] = useState(0)
@@ -104,7 +102,11 @@ export default function App() {
       <Route path="/direct" element={<Protected Comp={Direct} />}></Route>
       <Route path="/team" element={<Protected Comp={Direct} />}></Route>
       <Route path="/tree" element={<Protected Comp={Direct} />}></Route>
-      <Route path="/wallet" element={<Protected Comp={WithdrawPage} />}></Route>
+      <Route path="/wallet" element={<Protected Comp={WalletPage} />}></Route>
+      <Route path="/wRequest" element={<Protected Comp={WithdrawRequestPage} />}></Route>
+      <Route path="/wHistory" element={<Protected Comp={WithdrawRequestPage} />}></Route>
+      <Route path="/sRequest" element={<Protected Comp={SendMoneyRequestPage} />}></Route>
+      <Route path="/sHistory" element={<Protected Comp={SendMoneyRequestPage} />}></Route>
       <Route path="/accountStatement/:type" element={<Protected Comp={Account} />}></Route>
       <Route path="/recharge" element={<Protected Comp={Recharge} />}></Route>
       <Route path="/logout" element={<Protected Comp={Logout} />}></Route>
