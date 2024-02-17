@@ -102,10 +102,10 @@ export default function WalletPage() {
                         <div className="tab-content pt-3" id="nav-tabContent">
                             <div className="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                                 <div className="bg-secondary h-100">
-                                    <form className="d-none d-md-flex ms-4" style={{ width: 'fit-content' }}>
+                                    {/* <form className="d-none d-md-flex ms-4" style={{ width: 'fit-content' }}>
                                         <div className="form-floating mb-3 m-2"><input type="number" className="form-control" id="floatingInput" placeholder="Enter Chips Amount" /><label htmlFor="floatingInput" style={{ color: 'yellow' }}>Enter Chips Amount</label></div>
                                         <button type="submit" className="btn btn-warning m-2" >Withdraw Request</button>
-                                    </form>
+                                    </form> */}
                                     <table className="table table-dark">
                                         <thead>
                                             <tr>

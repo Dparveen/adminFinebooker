@@ -1,13 +1,17 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react'
-import SendMoney from './Models/SendMoney'
 import SideBar from './components/SideBar'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import axios from 'axios'
 import configure from './BaseUrl'
+import SendMoneyRequest from './Models/sendMoneyRequest'
 export default function SendMoneyRequestPage() {
     const [sendlist, setsendlist] = useState([])
     const [loading, setLoading] = useState(false);
+    const [select, setSelect] = useState('');
+    const [userType, setUserType]=useState();
+    const [Status, setStatus]=useState(0);
+    const [ID, setId]=useState();
     useEffect(() => {
         let auth = JSON.parse(localStorage.getItem('protect'));
         // console.log(auth)
@@ -15,7 +19,9 @@ export default function SendMoneyRequestPage() {
             getSendUserList(auth.token)
         }
     }, [])
-
+    const update = async(data)=>{
+        setsendlist(data);
+}
     const getSendUserList = (auth) => {
         if (!loading) {
             setLoading(true);
@@ -55,7 +61,7 @@ export default function SendMoneyRequestPage() {
                 <Header />
                 <div className="col-sm-12 col-xl-12">
                     <div className="bg-secondary rounded h-100 p-4">
-                        <h6 className="mb-4">Send Monay</h6>
+                        <h6 className="mb-4">Deposit Request</h6>
                         <nav>
                             <div className="nav nav-tabs" id="nav-tab" role="tablist" >
                                 <button className="nav-link active" id="nav-home-tab" style={{ width: '50%' }} data-bs-toggle="tab"
@@ -71,8 +77,7 @@ export default function SendMoneyRequestPage() {
                                 <div className="bg-secondary h-100">
                                     <table className="table table-dark">
                                         <thead>
-                                            <tr>
-                                                <th scope="col">#</th>
+                                            <tr className='text-center'>
                                                 <th scope="col">Name</th>
                                                 <th scope="col">Amount</th>
                                                 <th scope="col">Trns. ID</th>
@@ -83,15 +88,14 @@ export default function SendMoneyRequestPage() {
                                         <tbody>
                                             {/* {console.log(Reclist)} */}
                                             {sendlist.map((data, i) =>
-                                                <tr key={i}>
-                                                    <th scope="row">{i+1}</th>
+                                                data.status === 0 && <tr key={i} className='text-center'>
                                                     <td>{data.requestFrom}</td>
                                                     <td>{data.amount}</td>
                                                     <td>{data.transectionId}</td>
                                                     <td>{data.createdAt.toString().slice(8,10)+"/"+data.createdAt.toString().slice(5,7)+"/"+data.createdAt.toString().slice(0,4)}</td>
                                                     <td>
-                                        <button type="submit" className="btn btn-success m-2" >Accept</button>
-                                        <button type="submit" className="btn btn-danger m-2" >Reject</button>
+                                        <button type="submit" className="btn btn-success m-2" data-bs-toggle="modal" data-bs-target="#SendMoneyRequest" value={data.requestFrom} onClick={(e) => { setSelect(data.requestFrom); setUserType('accept'); setId(data._id); setStatus(1) }}   >Accept</button>
+                                        <button type="submit" className="btn btn-danger m-2" data-bs-toggle="modal" data-bs-target="#SendMoneyRequest" value={data.requestFrom} onClick={(e) => { setSelect(data.requestFrom); setUserType('reject'); setId(data._id); setStatus(2) }}   >Reject</button>
                                         </td>
                                                 </tr>
                                             )}
@@ -104,8 +108,7 @@ export default function SendMoneyRequestPage() {
                                     <div className="bg-secondary">
                                         <table className="table table-dark">
                                             <thead>
-                                                <tr>
-                                                    <th scope="col">#</th>
+                                                <tr className='text-center'>
                                                     <th scope="col">To User</th>
                                                     <th scope="col">Amount</th>
                                                     <th scope="col">Trans. ID</th>
@@ -115,13 +118,12 @@ export default function SendMoneyRequestPage() {
                                             </thead>
                                             <tbody>
                                                 {sendlist.map((data, i) =>
-                                                    <tr key={i} >
-                                                        <th scope="row">{i+1}</th>
+                                                    <tr key={i} className='text-center' >
                                                         <td>{data.requestFrom}</td>
                                                         <td>{data.amount}</td>
                                                         <td>{data.transectionId}</td>
                                                         <td>{data.createdAt.toString().slice(8,10)+"/"+data.createdAt.toString().slice(5,7)+"/"+data.createdAt.toString().slice(0,4)}</td>
-                                                        <td>{data.status === 0 ? 'Pending':''}{data.status === 1 ? 'Amount Sent to user wallet':''}{data.status === 2 ? 'Rejected':''}{data.review && data.review !== '' ? <p>{data.review}</p>:''}</td>
+                                                        <td>{data.status === 0 ? 'Pending':''}{data.status !== 0 ? <>{data.comment}</>:''}</td>
                                                     </tr>
                                                 )}
 
@@ -133,7 +135,7 @@ export default function SendMoneyRequestPage() {
                         </div>
                     </div>
                 </div>
-                {/* <SendMoney /> */}
+                <SendMoneyRequest data={select} Type={userType} ID={ID} update={update} status={Status} />
             </div>
             <Footer />
         </>

@@ -122,7 +122,7 @@ export default function SideBar(props) {
                         </div>
                     </div>
                     <div className="nav-item dropdown">
-                        <Link to="/" className="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i className="fas fa-dice-d20 me-2"></i>Send Money</Link>
+                        <Link to="/" className="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i className="fas fa-dice-d20 me-2"></i>Deposit</Link>
                         <div className="dropdown-menu bg-transparent border-0">
                             <Link to="/sRequest" className="dropdown-item"><i className="fa fa-list me-1"></i> Request</Link>
                             <Link to="/sHistory" className="dropdown-item"> <i className="fa fa-file-invoice-dollar"></i> History</Link>

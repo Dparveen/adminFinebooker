@@ -1,17 +1,16 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react'
-import SendMoney from './Models/SendMoney'
 import SideBar from './components/SideBar'
 import Header from './components/Header'
 import Footer from './components/Footer'
-import { CommonContext } from './CommonContext'
 import axios from 'axios'
 import configure from './BaseUrl'
-import SendMoneyRequest from './Models/sendMoneyRequest'
+import WithdrawalRequest from './Models/WithdrawalRequest'
 export default function WithdrawRequestPage() {
     const [Reclist, setReclist] = useState([])
     const [loading, setLoading] = useState(false);
     const [select, setSelect] = useState('');
     const [userType, setUserType]=useState();
+    const [Status, setStatus]=useState(0);
     const [ID, setId]=useState();
     useEffect(() => {
         let auth = JSON.parse(localStorage.getItem('protect'));
@@ -51,6 +50,11 @@ export default function WithdrawRequestPage() {
                 });
         }
     }
+
+    const update = async(data)=>{
+            setReclist(data);
+    }
+
     const statusSet =(sts) =>{
         switch (sts) {
             case 1:
@@ -69,7 +73,7 @@ export default function WithdrawRequestPage() {
                 <Header />
                 <div className="col-sm-12 col-xl-12">
                     <div className="bg-secondary rounded h-100 p-4">
-                        <h6 className="mb-4">Withdrawal</h6>
+                        <h6 className="mb-4">Withdrawal Request</h6>
                         <nav>
                             <div className="nav nav-tabs" id="nav-tab" role="tablist" >
                                 <button className="nav-link active" id="nav-home-tab" style={{ width: '50%' }} data-bs-toggle="tab"
@@ -85,7 +89,7 @@ export default function WithdrawRequestPage() {
                                 <div className="bg-secondary h-100">
                                     <table className="table table-dark">
                                         <thead>
-                                        <tr className='text-warning' style={{fontSize:'small'}}>
+                                        <tr className='text-warning text-center' style={{fontSize:'small'}}>
                                                 <th scope="col" >Type</th>
                                                 <th scope="col" >Amount</th>
                                                 <th scope='col' >Details</th>
@@ -98,7 +102,7 @@ export default function WithdrawRequestPage() {
                                         <tbody>
                                             {/* {console.log(Reclist)} */}
                                             {Reclist.map((data, i) =>
-                                                <tr key={data._id} style={{fontSize:'small'}} className='btn-info text-white'>
+                                                data.status === 0 && <tr key={data._id} style={{fontSize:'small'}} className='btn-info text-white text-center'>
                                                 <td>{data.pType === undefined ? <span>DPST</span>:<span>WDRL</span>}</td>
                                                 <td>{data.amount}</td>
                                                 <td>{data.pType === undefined 
@@ -113,8 +117,8 @@ export default function WithdrawRequestPage() {
                                                 <td>{data.comment !== undefined ? <>{data.comment}</> : <></>}</td>
                                                 <td>{data.createdAt.toString().slice(8,10) +"/"+data.createdAt.toString().slice(5,7)+"/"+data.createdAt.toString().slice(0,4)}</td>
                                                 <td>
-                                                <button type="button" className="btn btn-square btn-outline-warning m-1" style={{ width: '30px', height: '30px' }} data-bs-toggle="modal" data-bs-target="#Withdrawalrequest" value={data.requestFrom} onClick={(e) => { setSelect(data.requestFrom); setUserType('accept'); setId(data._id) }}  >Accept</button>
-                                                <button type="button" className="btn btn-square btn-outline-warning m-1" style={{ width: '30px', height: '30px' }} data-bs-toggle="modal" data-bs-target="#Withdrawalrequest" value={data.requestFrom} onClick={(e) => { setSelect(data.requestFrom); setUserType('reject'); setId(data._id) }} >Reject</button>
+                                                <button type="button" className="btn btn-square btn-outline-success m-1" style={{ width: '30px', height: '30px' }} data-bs-toggle="modal" data-bs-target="#Withdrawalrequest" value={data.requestFrom} onClick={(e) => { setSelect(data.requestFrom); setUserType('accept'); setId(data._id); setStatus(1) }}  ><i className='fa fa-check'></i></button>
+                                                <button type="button" className="btn btn-square btn-outline-danger m-1" style={{ width: '30px', height: '30px' }} data-bs-toggle="modal" data-bs-target="#Withdrawalrequest" value={data.requestFrom} onClick={(e) => { setSelect(data.requestFrom); setUserType('reject'); setId(data._id); setStatus(2)}} ><i className='fa fa-ban'></i></button>
                                         </td>
                                                 </tr>
                                             )}
@@ -127,7 +131,7 @@ export default function WithdrawRequestPage() {
                                     <div className="bg-secondary">
                                     <table className="table table-dark">
                                         <thead>
-                            <tr className='text-warning' style={{fontSize:'small'}}>
+                            <tr className='text-warning text-center' style={{fontSize:'small'}}>
                                 <th scope="col" >Type</th>
                                 <th scope="col" >Amount</th>
                                 <th scope='col' >Details</th>
@@ -139,7 +143,7 @@ export default function WithdrawRequestPage() {
                         </thead>
                         <tbody>
                         {Reclist.map((user, i)=>
-                            <tr key={user._id} style={{fontSize:'small'}} className='btn-info text-white'>
+                            <tr key={user._id} style={{fontSize:'small'}} className='btn-info text-white text-center'>
                                 <td>{user.pType === undefined ? <span>DPST</span>:<span>WDRL</span>}</td>
                                 <td>{user.amount}</td>
                                 <td>{user.pType === undefined 
@@ -166,7 +170,7 @@ export default function WithdrawRequestPage() {
                 </div>
                 {/* <SendMoney /> */}
             </div>
-            <SendMoneyRequest data={select} Type={userType} ID={ID} />
+            <WithdrawalRequest data={select} Type={userType} ID={ID} update={update} status={Status} />
             <Footer />
         </>
     )
